@@ -42,6 +42,14 @@ class FlowerCareDB:
             )
         """)
 
+        cursor.execute("""
+            CREATE TABLE device_state (
+                device TEXT,
+	            idx INTEGER,
+                FOREIGN KEY (device) REFERENCES data (device)
+            )
+        """)
+
     def isDeviceExists(self, mac):
             """Teste l'existance du capteur dans la base
             de données à partir de son adresse mac."""

@@ -32,3 +32,11 @@ class HistoricalEntry(object):
         self.conductivity = int.from_bytes(byte_array[12:14], _BYTE_ORDER)
         self.device = device_address
         #print (device_address + ' ' + self.timestamp.strftime("%m/%d/%Y, %H:%M:%S") + ' ' + str(self.temperature) + ' ')
+
+    def __init__(self, timestamp, temperature, light, moisture, conductivity, device) :
+        self.timestamp = timestamp
+        self.temperature = temperature
+        self.light = light
+        self.moisture = moisture
+        self.conductivity = conductivity
+        self.device = device

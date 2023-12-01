@@ -5,9 +5,14 @@ import logging
 import argparse
 
 import csv
+import re
 
 from FlowerCareDB import FlowerCareDB
 from FlowerCareDecoder import read_history, FlowerCareTimeoutException
+
+import paramiko
+
+from stat import S_ISDIR, S_ISREG
 
 _DEVICE_PREFIX = '5c:85:7e:'
 _DEVICE_NAMES = ['flower mate', 'flower care']
@@ -94,6 +99,7 @@ if args.sync_postgres:
     db = FlowerCareDB()
     db.synchronise()
     quit()
+
 logging.log(logging.INFO, "Start scanning for devices")
 
 if args.csv_only:
@@ -149,10 +155,5 @@ for device in devices:
        insert_database(data)
     except (FlowerCareTimeoutException) as e:
         print ("Timeout reading {}".format(device.addr))
-    
 
-if args.sync_postgres:
-    logging.info("Synchronising PostgreSQL")
-    db = FlowerCareDB()
-    db.synchronise()
 logging.shutdown()

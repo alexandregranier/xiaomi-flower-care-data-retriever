@@ -1,5 +1,5 @@
 from gattlib import GATTRequester, GATTException, BTIOException
-import time
+import time, sys
 from datetime import datetime
 from HistoricalEntry import HistoricalEntry
 from struct import unpack
@@ -130,7 +130,7 @@ def get_history_info(dev, e_time):
             raise FlowerCareTimeoutException()
         try:
             req = GATTRequester(dev)
-            print ("Write history handle")
+            print ("Write history handle in ", dev)
             req.write_by_handle(_HANDLE_HISTORY_CONTROL, _CMD_HISTORY_READ_INIT)
             print ("Read history data handle")
             entry_count = req.read_by_handle(HISTORY_DATA_HANDLE)[0]
@@ -150,6 +150,7 @@ def get_history_info(dev, e_time):
                             req.write_by_handle(_HANDLE_HISTORY_CONTROL, payload)
                             response = req.read_by_handle(_HANDLE_HISTORY_READ)[0]
                             historical_data.append(HistoricalEntry(response, e_time, dev))
+                            print ("size : {}", sys.getsizeof(historical_data))
                             retreived = True
                             req.disconnect()
                             counter+= 1
